@@ -32,7 +32,7 @@ This is a training project created as part of an intensive program. Users can lo
    ```bash
    npm install
 
-4. Set up Firebase and JWT: file and add your keys in .env:
+4. Set up Firebase and JWT: create .env file and add your keys:
    ```bash
    VITE_FIREBASE_API_KEY=your_api_key
    VITE_JWT_SECRET=your_secret_key
