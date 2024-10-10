@@ -21,11 +21,9 @@ const menuItems = ref([
 </script>
 
 <template>
- <header class="menu">
-  <app-menu :menuItems="menuItems" />
- </header>
+ <div class="container">
+  <app-menu class="menu" :menuItems="menuItems" />
 
- <main class="container">
   <img
     v-if="imageName"
     :src="imgSrc"
@@ -34,7 +32,7 @@ const menuItems = ref([
   <h1 v-html="title" />
   <p class="text" v-html="text" />
   <slot />
- </main>
+ </div>
 </template>
 
 <style lang="scss">
