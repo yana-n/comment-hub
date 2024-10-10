@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {defineProps, ref} from 'vue';
-import AppMenu from "@/components/UI/AppMenu.vue";
+import AppMenu from "@/components/AppMenu.vue";
 
 interface LayoutProps {
  title?: string;
@@ -36,8 +36,6 @@ const menuItems = ref([
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/global.scss";
-
 .menu {
  margin-bottom: 95px;
 }
