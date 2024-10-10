@@ -1,0 +1,46 @@
+@import "vars";
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--size-xxs);
+  font-family: var(--font-primary);
+}
+
+img {
+  max-width: 100%;
+  width: auto;
+}
+
+p {
+  line-height: 30px;
+}
+
+a {
+  text-decoration: none;
+  transition: .2s ease-out;
+  color: var(--accent-color);
+}
+
+h1 {
+  margin: 52px 0;
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  font-family: var(--font-tertiary);
+
+  span {
+    color: var(--accent-color);
+  }
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1300px;
+  padding: 0 10px;
+}
