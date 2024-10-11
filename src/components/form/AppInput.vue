@@ -28,7 +28,7 @@ const getInputType = () => {
 const emit = defineEmits(['update:modelValue']);
 
 const updateValue = (event: Event) => {
- const target = event.target as HTMLInputElement;
+ const target = event.target as EventTarget;
  emit('update:modelValue', target.value);
 };
 </script>
