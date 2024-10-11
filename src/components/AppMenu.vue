@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {defineProps} from 'vue';
+import AppLoginBtn from "@/components/AppLoginBtn.vue";
 
 interface MenuItem {
  path: string;
@@ -17,6 +18,7 @@ const props = defineProps<{
    <li v-for="({ path, name }, index) in menuItems" :key="index">
     <router-link :to="path">{{ name }}</router-link>
    </li>
+   <app-login-btn />
   </ul>
  </nav>
 </template>

@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import AppButton from "@/components/form/AppButton.vue";
 import AppInput from "@/components/form/AppInput.vue";
-import { ref, computed } from "vue";
+import AppToaster from "@/components/AppToaster.vue";
+import {ref, computed} from "vue";
+import { useAuth } from "@/composables/useAuth";
+import { useToaster } from "@/composables/useToaster";
+import { useRouter } from 'vue-router';
+import {useAuthNotifications} from "@/composables/useAuthNotifications.ts";
 
 interface Props {
  type: 'signIn' | 'signUp';
@@ -9,25 +14,34 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const isLogin = computed(() => props.type === 'signIn');
+const { login, register, authError, authSuccess } = useAuth();
+const { addToast } = useToaster();
+const router = useRouter();
 
-const title = isLogin.value ? 'Sign In' : 'Sign Up'
+const isLoginPage = computed(() => props.type === 'signIn');
+const title = computed(() => (isLoginPage.value ? 'Sign In' : 'Sign Up'));
 
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const passwordConfirmation = ref('');
+const form = ref({
+ name: '',
+ email: '',
+ password: '',
+ passwordConfirmation: ''
+});
 
-const handleSubmit = () => {
- const formData = {
-  name: name.value,
-  email: email.value,
-  password: password.value,
-  passwordConfirmation: passwordConfirmation.value,
- };
+const handleSubmit = async () => {
+ if (isLoginPage.value) {
+  await login(form.value.email, form.value.password);
+ } else {
+  if (form.value.password !== form.value.passwordConfirmation) {
+   addToast('Passwords do not match!', 'error');
+   return;
+  }
 
- console.log('Form Data:', formData);
+  await register(form.value.email, form.value.password);
+ }
 };
+
+useAuthNotifications(authError, authSuccess);
 </script>
 
 <template>
@@ -35,12 +49,13 @@ const handleSubmit = () => {
   <h1>{{ title }}</h1>
   <p>Ready to become part of the exclusive club? Fill in the details below, and let the journey begin!</p>
   <form class="form" @submit.prevent="handleSubmit">
-   <app-input v-if="!isLogin" v-model="name" type="text" placeholder="Name" name="name" />
-   <app-input type="email" v-model="email" placeholder="Email Address" name="email" />
-   <app-input type="password" v-model="password" placeholder="Password" name="password" />
-   <app-input v-if="!isLogin" v-model="passwordConfirmation" type="password_confirmation" placeholder="Confirm Password" name="password_confirmation" />
+   <app-input v-if="!isLoginPage" v-model="form.name" type="text" placeholder="Name" name="name" />
+   <app-input type="email" v-model="form.email" placeholder="Email Address" name="email" />
+   <app-input type="password" v-model="form.password" placeholder="Password" name="password" />
+   <app-input v-if="!isLoginPage" v-model="form.passwordConfirmation" type="password_confirmation" placeholder="Confirm Password" name="password_confirmation" />
    <app-button :text="title" />
   </form>
+  <app-toaster />
  </div>
 </template>
 

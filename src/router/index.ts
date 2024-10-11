@@ -4,7 +4,10 @@ import About from '@/views/About.vue';
 import Contacts from '@/views/Contacts.vue';
 import SignIn from '@/views/SignIn.vue';
 import SignUp from '@/views/SignUp.vue';
-import Testimonials from "../views/Testimonials.vue";
+import Testimonials from "@/views/Testimonials.vue";
+import { useToaster } from "@/composables/useToaster";
+
+const { clearToasts } = useToaster()
 
 const routes = [
     {
@@ -42,6 +45,11 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+});
+
+router.beforeEach((to, from, next) => {
+    clearToasts();
+    next();
 });
 
 export default router;
