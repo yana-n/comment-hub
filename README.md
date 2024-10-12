@@ -51,10 +51,12 @@ This is a training project created as part of an intensive program. Users can lo
    ```
 
 5. Run the project:
+
    ```bash
    npm run dev
 
    ```
+
 6. Open in your browser:
    ```bash
    http://localhost:3000

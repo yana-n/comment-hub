@@ -13,7 +13,7 @@ const notice = ref({
 </script>
 
 <template>
- <LoginLayout :notice>
-  <app-form :type="'signUp'" />
- </LoginLayout>
+  <LoginLayout :notice>
+    <app-form :type="'signUp'" />
+  </LoginLayout>
 </template>

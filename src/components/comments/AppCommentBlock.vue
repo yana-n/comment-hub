@@ -36,10 +36,10 @@ const totalLikes = computed(() => countTotalLikes(props.comment))
 
 <template>
   <div class="block">
-    <app-avatar :name="comment.userName" />
+    <app-avatar :name="comment.userName || comment.userEmail" />
     <app-comment-bubble
       :text="comment.text"
-      :name="comment.userName"
+      :name="comment.userName || comment.userEmail"
       :date="comment.createdAt"
       :likes="totalLikes"
       :comments-count="totalComments"

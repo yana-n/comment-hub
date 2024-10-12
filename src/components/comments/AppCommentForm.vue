@@ -1,30 +1,49 @@
 <script setup lang="ts">
 import AppCommentInput from '@/components/comments/AppCommentInput.vue'
 import AppCommentBtn from '@/components/comments/AppCommentBtn.vue'
-import { defineProps, ref } from 'vue'
+import { defineProps, ref, watch } from 'vue'
 
 interface IProps {
+  modelValue: string
   showBtn?: boolean
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   showBtn: true,
+  modelValue: '',
 })
 
-const comment = ref('')
+const emit = defineEmits(['update:modelValue', 'submit-form'])
+
+const comment = ref(props.modelValue)
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    comment.value = newValue
+  },
+)
 
 const handleSubmit = () => {
+  emit('submit-form', comment.value)
   comment.value = ''
+}
+
+const handleInput = (value: string) => {
+  emit('update:modelValue', value)
 }
 </script>
 
 <template>
-  <form @submit.prevent>
-    <app-comment-input v-model="comment" @keyup.enter="handleSubmit" />
+  <form @submit.prevent="handleSubmit">
+    <app-comment-input
+      :model-value="comment"
+      @update:modelValue="handleInput"
+    />
     <app-comment-btn
       v-if="showBtn"
       :is-disabled="!comment"
-      @submit-form.enter="handleSubmit"
+      @submit-form="handleSubmit"
     />
   </form>
 </template>

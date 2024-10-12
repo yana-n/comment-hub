@@ -13,6 +13,7 @@ export interface IComment {
   text: string
   userId: string
   userName: string
+  userEmail: string
   createdAt: Date
   likes: number
   level: number

@@ -13,7 +13,11 @@ const authError = ref<string | null>(null)
 const authSuccess = ref<string | null>(null)
 
 onAuthStateChanged(auth, (currentUser) => {
-  user.value = currentUser
+  if (currentUser) {
+    user.value = currentUser
+  } else {
+    user.value = null
+  }
 })
 
 const resetNotificationMessage = () => {
@@ -21,7 +25,7 @@ const resetNotificationMessage = () => {
   authSuccess.value = null
 }
 
-export function useAuth() {
+export const useAuth = () => {
   const register = async (email: string, password: string) => {
     resetNotificationMessage()
 
@@ -31,10 +35,11 @@ export function useAuth() {
         email,
         password,
       )
-
       user.value = userCredential.user
-      authSuccess.value = 'Registration successfully'
+      authSuccess.value = 'Registration successful'
+      console.log('Registered user:', userCredential.user)
     } catch (error) {
+      console.error('Registration error:', error)
       authError.value = (error as Error).message
     }
   }
@@ -48,10 +53,11 @@ export function useAuth() {
         email,
         password,
       )
-
       user.value = userCredential.user
-      authSuccess.value = 'Login successfully'
+      authSuccess.value = 'Login successful'
+      console.log('Logged in user:', userCredential.user)
     } catch (error) {
+      console.error('Login error:', error)
       authError.value = (error as Error).message
     }
   }
@@ -62,8 +68,10 @@ export function useAuth() {
     try {
       await signOut(auth)
       user.value = null
-      authSuccess.value = 'Logout successfully'
+      authSuccess.value = 'Logout successful'
+      console.log('User logged out')
     } catch (error) {
+      console.error('Logout error:', error)
       authError.value = (error as Error).message
     }
   }
