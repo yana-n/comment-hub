@@ -5,6 +5,7 @@ import AppCommentForm from '@/components/comments/AppCommentForm.vue'
 import AppCommentBlock from '@/components/comments/AppCommentBlock.vue'
 import { ref, onMounted } from 'vue'
 import { useToaster } from '@/composables/useToaster.ts'
+import AppLoader from "@/components/AppLoader.vue";
 
 const { comments, loadComments, saveComment } = useComments()
 const { user } = useAuth()
@@ -53,9 +54,13 @@ const handleSubmit = async (
       @submit-form="handleSubmit"
     />
 
-    <div v-for="comment in comments" :key="comment.id">
+    <div
+      v-if="comments.length > 0"
+      v-for="comment in comments" :key="comment.id"
+    >
       <app-comment-block :comment="comment" parent-path="comments" />
     </div>
+    <app-loader v-else />
   </div>
 </template>
 
