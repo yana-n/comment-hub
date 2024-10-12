@@ -2,9 +2,10 @@ import { db } from '@/firebaseConfig.ts'
 import { IComment } from '@/types/components'
 import { set, onValue, push, ref, get, update } from 'firebase/database'
 import { ref as VRef } from 'vue'
-import { MAX_COMMENT_LEVEL } from '@/constants.ts'
+import { getCommentLevelFromPath } from '../utils'
+import { MAX_COMMENT_LEVEL } from '../constants.ts'
 
-interface IUser {
+interface IUserData {
   text: string
   userId: string | null
   userName: string | null
@@ -16,32 +17,62 @@ interface IUser {
 const comments = VRef<IComment[]>([])
 
 export const useComments = () => {
-  const saveComment = async (user: IUser, parentId: string | null = null) => {
+  const saveComment = async (
+    userData: IUserData,
+    parentId?: string,
+    path?: string,
+  ) => {
     try {
       const commentId = push(ref(db, 'comments')).key
 
       const commentData = {
         id: commentId,
-        text: user.text,
-        userId: user.userId,
-        userName: user.userName ?? user.userEmail,
-        userEmail: user.userEmail,
+        text: userData.text,
+        userId: userData.userId,
+        userName: userData.userName ?? userData.userEmail,
+        userEmail: userData.userEmail,
         createdAt: new Date().toISOString(),
+        parentId,
         likes: 0,
-        parentId: parentId || null, // Добавляем parentId из параметра
         replies: {},
       }
 
       if (!parentId) {
-        // Если это основной комментарий, сохраняем его в корне
-        await set(ref(db, `comments/${commentData.id}`), commentData)
+        await set(ref(db, `comments/${commentId}`), commentData)
       } else {
-        // Если это вложенный комментарий, определяем правильный путь
-        const parentCommentPath = user.replyId
-          ? `comments/${parentId}/replies/${user.replyId}/replies/${commentData.id}`
-          : `comments/${parentId}/replies/${commentData.id}`
+        const currentPath = path ? path : `comments/${parentId}`
+        const currentLevel = getCommentLevelFromPath(currentPath)
 
-        await set(ref(db, parentCommentPath), commentData)
+        let adjustedPath = currentPath
+        if (currentLevel >= MAX_COMMENT_LEVEL) {
+          const pathSegments = currentPath.split('/')
+
+          adjustedPath = pathSegments
+            .slice(
+              0,
+              pathSegments.indexOf('replies') +
+                MAX_COMMENT_LEVEL * 2 -
+                (MAX_COMMENT_LEVEL + 1),
+            )
+            .join('/')
+
+          console.log(currentPath)
+          console.log(adjustedPath)
+        }
+
+        const parentCommentRef = ref(db, adjustedPath)
+        const snapshot = await get(parentCommentRef)
+
+        if (snapshot.exists()) {
+          const parentCommentData = snapshot.val()
+
+          parentCommentData.replies = parentCommentData.replies || {}
+          parentCommentData.replies[commentId] = commentData
+
+          await update(parentCommentRef, parentCommentData)
+        } else {
+          console.error('Parent comment does not exist')
+        }
       }
     } catch (error) {
       console.error('Error saving comment:', error)
@@ -83,19 +114,19 @@ export const useComments = () => {
 
     if (likedByUser) {
       commentData.likes = (commentData.likes || 0) - 1
-      delete commentData.likedBy[userId] // Удаляем лайк пользователя
+      delete commentData.likedBy[userId]
     } else {
       commentData.likes = (commentData.likes || 0) + 1
       commentData.likedBy = commentData.likedBy || {}
-      commentData.likedBy[userId] = true // Добавляем лайк пользователя
+      commentData.likedBy[userId] = true
     }
 
     await update(commentRef, commentData)
   }
 
-  const parseComments = (data: any): any[] => {
+  const parseComments = (data: Record<string, IComment>): IComment[] => {
     return Object.entries(data)
-      .map(([key, value]: [string, any]) => ({
+      .map(([key, value]: [string, IComment]) => ({
         id: key,
         ...value,
         replies: value.replies ? parseComments(value.replies) : [],

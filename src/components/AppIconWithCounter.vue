@@ -27,6 +27,7 @@ const props = defineProps<IProps>()
 }
 
 .icon {
+  margin-top: 4px;
   cursor: pointer;
   transition: opacity 0.2s ease-in-out;
 

@@ -25,6 +25,7 @@ const countTotalComments = (
   replies: Record<string, IComment> | undefined,
 ): number => {
   if (!replies) return 0
+
   return Object.values(replies).reduce((acc, reply) => {
     return acc + 1 + countTotalComments(reply.replies)
   }, 0)
@@ -40,33 +41,26 @@ const countTotalLikes = (comment: IComment): number => {
   return comment.likes + repliesLikes
 }
 
-const updateCommentReplies = async () => {
-  const updatedComments = await getComments()
-  const updatedComment = updatedComments.find((c) => c.id === props.comment.id)
-  if (updatedComment) {
-    props.comment.replies = updatedComment.replies
-  }
-}
-
-const handleReplySubmit = async (replyText: string) => {
-  if (!replyText || !user.value) return
+const handleReplySubmit = async () => {
+  if (!newReply || !user.value) return
 
   const replyData = {
-    text: replyText,
-    userId: user.value.uid,
-    userName: user.value.displayName || user.value.email,
-    userEmail: user.value.email,
+    text: newReply.value || '',
+    userId: user.value.uid || '',
+    userName: user.value.displayName || user.value.email || 'Anonymous',
+    userEmail: user.value.email || '',
     createdAt: new Date().toISOString(),
     parentId: props.comment.id,
     likes: 0,
     replies: {},
   }
 
-  await saveComment(replyData, props.comment.id)
+  await saveComment(replyData, props.comment.id, commentPath.value)
+
   newReply.value = ''
   isReplying.value = false
 
-  await updateCommentReplies()
+  emit('reply')
 }
 
 const commentPath = computed(() => {

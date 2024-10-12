@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { getDatabase, ref as dbRef, get, update } from 'firebase/database'
 import { useAuth } from '@/composables/useAuth'
 import AppIconWithCounter from '@/components/AppIconWithCounter.vue'
@@ -76,7 +76,11 @@ const toggleLike = async () => {
 
 <style scoped lang="scss">
 .liked {
-  fill: #b29dd9;
+  color: #5400e3 !important;
+}
+
+svg {
+  transition: color 0.3s ease;
 }
 
 .icon {
