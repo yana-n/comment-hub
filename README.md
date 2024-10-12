@@ -1,5 +1,9 @@
 # Project: Comments with Authorization
 
+## Demo of the Project
+
+[Click me 👾](https://comment-hub.netlify.app/)
+
 ## About the Project
 
 This is a training project created as part of an intensive program. Users can log in, comment and reply to other users' comments.
