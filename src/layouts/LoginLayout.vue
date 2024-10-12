@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLogo from "@/components/AppLogo.vue";
 import AppFormNotice from "@/components/form/AppFormNotice.vue";
-import {IFormNotice} from "@/types/components/index.d.ts";
+import {IFormNotice} from "@/types/components";
 
 interface IProps {
  notice?: IFormNotice

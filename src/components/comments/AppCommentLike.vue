@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import IconLike from '@/assets/images/icons/like.svg'
+import {defineProps} from "vue";
+
+interface IProps {
+ likes: number;
+}
+
+const props = defineProps<IProps>();
 </script>
 
 <template>
  <div class="wrapper">
   <icon-like class="icon" />
-  <span>1</span>
+  <span>{{ likes }}</span>
  </div>
 </template>
 

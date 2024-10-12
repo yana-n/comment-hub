@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {IFormNotice} from "@/types/components/index.d.ts";
+import {IFormNotice} from "@/types/components";
 
 interface IProps {
  notice?: IFormNotice

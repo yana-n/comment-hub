@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import IconComment from '@/assets/images/icons/comment.svg'
+import {defineProps} from "vue";
+
+interface IProps {
+ count: number;
+}
+
+const props = defineProps<IProps>();
 </script>
 
 <template>
  <div class="wrapper">
   <icon-comment class="icon" />
-  <span>5</span>
+  <span>{{ count }}</span>
  </div>
 </template>
 

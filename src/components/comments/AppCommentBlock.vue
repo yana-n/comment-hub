@@ -1,17 +1,51 @@
 <script setup lang="ts">
+import { defineProps, computed } from "vue";
 import AppCommentBubble from "@/components/comments/AppCommentBubble.vue";
 import AppAvatar from "@/components/AppAvatar.vue";
+import { IComment } from "@/types/components";
+
+interface IProps {
+ comment: IComment;
+}
+
+const props = defineProps<IProps>();
+
+const countTotalComments = (replies: Record<string, IComment> | undefined): number => {
+ if (!replies) return 0;
+ return Object.values(replies).reduce((acc, reply) => {
+  return acc + 1 + countTotalComments(reply.replies);
+ }, 0);
+};
+
+const countTotalLikes = (comment: IComment): number => {
+ const repliesLikes = comment.replies
+   ? Object.values(comment.replies).reduce((acc, reply) => acc + countTotalLikes(reply), 0)
+   : 0;
+ return comment.likes + repliesLikes;
+};
+
+const totalComments = computed(() => countTotalComments(props.comment.replies));
+
+const totalLikes = computed(() => countTotalLikes(props.comment));
 </script>
 
 <template>
  <div class="block">
-  <app-avatar class="avatar" name="Test" />
+  <app-avatar :name="comment.userName" />
   <app-comment-bubble
-    text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ligula quis lacus fermentum, vitae vulputate sem tristique. Nunc justo orci, porta in luctus eget, ultrices vitae justo. Mauris dignissim laoreet mi, a commodo libero volutpat non. Maecenas aliquam sed leo eu blandit. Nam vehicula rhoncus libero ut porttitor. Proin urna tortor, bibendum at faucibus auctor, cursus sit amet odio. In hac habitasse platea dictumst. "
-    name="Test Name"
-    date="10-10-2021"
-    :comments-count="10"
-    :likes="5"
+    :text="comment.text"
+    :name="comment.userName"
+    :date="comment.createdAt"
+    :likes="totalLikes"
+    :comments-count="totalComments"
+  />
+ </div>
+
+ <div v-if="comment.replies" class="replies">
+  <app-comment-block
+    v-for="reply in Object.values(comment.replies)"
+    :key="reply.id"
+    :comment="reply"
   />
  </div>
 </template>
@@ -26,5 +60,13 @@ import AppAvatar from "@/components/AppAvatar.vue";
 
 .avatar {
  flex-shrink: 0;
+}
+
+.replies {
+ margin-left: 40px;
+}
+
+.block, .replies {
+ margin-bottom: 40px;
 }
 </style>

@@ -2,6 +2,7 @@
 import AppCommentLike from "@/components/comments/AppCommentLike.vue";
 import AppCommentCounter from "@/components/comments/AppCommentCounter.vue";
 import {defineProps} from "vue";
+import {prettifyDate} from "@/utils";
 
 interface IProps {
  name: string;
@@ -18,7 +19,7 @@ const props = defineProps<IProps>();
 <div class="bubble">
  <div class="top">
   <div class="name">{{ name }}</div>
-  <div class="date">{{ date }}</div>
+  <div class="date">{{ prettifyDate(date) }}</div>
  </div>
  <div class="text">
   {{ text }}
@@ -32,6 +33,7 @@ const props = defineProps<IProps>();
 
 <style scoped lang="scss">
 .bubble {
+ width: 100%;
  display: flex;
  flex-direction: column;
  gap: 20px;
