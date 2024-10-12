@@ -5,6 +5,7 @@ import { useAuth } from '@/composables/useAuth'
 import AppIconWithCounter from '@/components/AppIconWithCounter.vue'
 import IconLike from '@/assets/images/icons/like.svg'
 import { useToaster } from '@/composables/useToaster.ts'
+import AppToaster from '@/components/AppToaster.vue'
 
 const props = defineProps<{
   commentId: string
@@ -42,6 +43,7 @@ const fetchLikes = async () => {
 
 const toggleLike = async () => {
   if (!user.value) {
+    console.log(111)
     addToast('User is not authenticated', 'error')
     return
   }
@@ -72,6 +74,7 @@ const toggleLike = async () => {
 </script>
 
 <template>
+  <app-toaster />
   <app-icon-with-counter :count="likes" @click="toggleLike">
     <icon-like :class="{ liked: userHasLiked }" />
   </app-icon-with-counter>

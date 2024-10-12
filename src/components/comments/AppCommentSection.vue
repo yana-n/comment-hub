@@ -5,7 +5,8 @@ import AppCommentForm from '@/components/comments/AppCommentForm.vue'
 import AppCommentBlock from '@/components/comments/AppCommentBlock.vue'
 import { ref, onMounted } from 'vue'
 import { useToaster } from '@/composables/useToaster.ts'
-import AppLoader from "@/components/AppLoader.vue";
+import AppLoader from '@/components/AppLoader.vue'
+import AppToaster from '@/components/AppToaster.vue'
 
 const { comments, loadComments, saveComment } = useComments()
 const { user } = useAuth()
@@ -47,6 +48,7 @@ const handleSubmit = async (
 </script>
 
 <template>
+  <app-toaster />
   <div class="section">
     <app-comment-form
       class="form"
@@ -56,7 +58,8 @@ const handleSubmit = async (
 
     <div
       v-if="comments.length > 0"
-      v-for="comment in comments" :key="comment.id"
+      v-for="comment in comments"
+      :key="comment.id"
     >
       <app-comment-block :comment="comment" parent-path="comments" />
     </div>

@@ -45,6 +45,7 @@ useAuthNotifications(authError, authSuccess)
 </script>
 
 <template>
+  <app-toaster />
   <div class="form-wrapper">
     <h1>{{ title }}</h1>
     <p>
