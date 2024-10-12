@@ -2,13 +2,13 @@
 import {defineProps} from 'vue';
 import AppLoginBtn from "@/components/AppLoginBtn.vue";
 
-interface MenuItem {
+interface IMenuItem {
  path: string;
  name: string;
 }
 
 const props = defineProps<{
- menuItems: MenuItem[];
+ menuItems: IMenuItem[];
 }>();
 </script>
 

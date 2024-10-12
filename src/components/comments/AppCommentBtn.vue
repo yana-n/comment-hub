@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {defineProps} from "vue";
 
-interface Props {
+interface IProps {
  isDisabled?: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const handleClick = () => {
  emit('submit-form');

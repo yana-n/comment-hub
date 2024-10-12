@@ -2,13 +2,13 @@
 import {defineProps, ref} from 'vue';
 import AppMenu from "@/components/AppMenu.vue";
 
-interface LayoutProps {
+interface IProps {
  title?: string;
  text?: string;
  imageName?: string;
 }
 
-const props = defineProps<LayoutProps>();
+const props = defineProps<IProps>();
 
 const imgSrc = ref(import.meta.env.BASE_URL + `images/${props.imageName}.jpg`);
 

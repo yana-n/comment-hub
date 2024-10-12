@@ -3,11 +3,11 @@ import AppCommentInput from "@/components/comments/AppCommentInput.vue";
 import AppCommentBtn from "@/components/comments/AppCommentBtn.vue";
 import {defineProps, ref} from "vue";
 
-interface Props {
+interface IProps {
  showBtn?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
  showBtn: true
 })
 

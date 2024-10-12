@@ -1,11 +1,11 @@
 import { ref } from 'vue';
 
-interface Toast {
+interface IToast {
     message: string;
     type: 'success' | 'error' | 'info';
 }
 
-const toasts = ref<Toast[]>([]);
+const toasts = ref<IToast[]>([]);
 
 export function useToaster() {
     const addToast = (message: string, type: 'success' | 'error' | 'info') => {

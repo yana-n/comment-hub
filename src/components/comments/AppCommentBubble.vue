@@ -3,7 +3,7 @@ import AppCommentLike from "@/components/comments/AppCommentLike.vue";
 import AppCommentCounter from "@/components/comments/AppCommentCounter.vue";
 import {defineProps} from "vue";
 
-interface Props {
+interface IProps {
  name: string;
  date: Date;
  text: string;
@@ -11,7 +11,7 @@ interface Props {
  commentsCount: number;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 </script>
 
 <template>
@@ -50,6 +50,7 @@ const props = defineProps<Props>();
 
 .text {
  margin: 0;
+ line-height: 1.75;
 }
 
 .bottom {

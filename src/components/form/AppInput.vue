@@ -3,14 +3,14 @@ import {ref} from "vue";
 import ShownPasswordIcon from '@/assets/images/icons/show.svg'
 import HiddenPasswordIcon from '@/assets/images/icons/hide.svg'
 
-interface Props {
+interface IProps {
  type: 'text' | 'password' | 'email' | 'password_confirmation';
  placeholder: string;
  name: string;
  modelValue: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const isPasswordVisible = ref(false);
 

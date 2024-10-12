@@ -1,4 +1,4 @@
-interface IFormNotice {
+export interface IFormNotice {
     notice?: {
         text: string;
         btn: {
@@ -6,4 +6,15 @@ interface IFormNotice {
             pathName: string;
         }
     }
+}
+
+export interface IComment {
+    id: string;
+    text: string;
+    userId: string;
+    userName: string;
+    createdAt: Date;
+    likes: number;
+    level: number;
+    replies: Comment[];
 }

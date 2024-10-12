@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import AppLogo from "@/components/AppLogo.vue";
 import AppFormNotice from "@/components/form/AppFormNotice.vue";
+import {IFormNotice} from "@/types/components/index.d.ts";
 
-interface LayoutProps {
+interface IProps {
  notice?: IFormNotice
 }
 
-const props = defineProps<LayoutProps>();
+const props = defineProps<IProps>();
 </script>
 
 <template>

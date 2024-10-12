@@ -1,9 +1,11 @@
 <script setup lang="ts">
-interface Props {
+import {IFormNotice} from "@/types/components/index.d.ts";
+
+interface IProps {
  notice?: IFormNotice
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 </script>
 
 <template>

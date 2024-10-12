@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {computed, defineProps} from "vue";
 
-interface Props {
+interface IProps {
  name: string;
  src?: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const letter = computed(() => props.name[0])
 </script>

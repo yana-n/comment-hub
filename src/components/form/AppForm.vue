@@ -8,11 +8,11 @@ import { useToaster } from "@/composables/useToaster";
 import { useRouter } from 'vue-router';
 import {useAuthNotifications} from "@/composables/useAuthNotifications.ts";
 
-interface Props {
+interface IProps {
  type: 'signIn' | 'signUp';
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const { login, register, authError, authSuccess } = useAuth();
 const { addToast } = useToaster();
