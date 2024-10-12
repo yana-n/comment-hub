@@ -11,12 +11,15 @@ import {
 const user = ref<User | null>(null)
 const authError = ref<string | null>(null)
 const authSuccess = ref<string | null>(null)
+const isAuthenticated = ref<boolean>(false);
 
 onAuthStateChanged(auth, (currentUser) => {
   if (currentUser) {
     user.value = currentUser
+    isAuthenticated.value = true
   } else {
     user.value = null
+    isAuthenticated.value = false
   }
 })
 
@@ -77,6 +80,7 @@ export const useAuth = () => {
     user,
     authError,
     authSuccess,
+    isAuthenticated,
     register,
     login,
     logout,

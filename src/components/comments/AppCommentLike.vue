@@ -43,8 +43,7 @@ const fetchLikes = async () => {
 
 const toggleLike = async () => {
   if (!user.value) {
-    console.log(111)
-    addToast('User is not authenticated', 'error')
+    addToast('Please login to be able to vote', 'info')
     return
   }
 

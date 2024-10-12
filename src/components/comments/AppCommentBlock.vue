@@ -6,6 +6,7 @@ import { IComment } from '@/types/components'
 import AppCommentForm from '@/components/comments/AppCommentForm.vue'
 import { useComments } from '@/composables/useComments.ts'
 import { useAuth } from '@/composables/useAuth.ts'
+import {useToaster} from "@/composables/useToaster";
 
 interface IProps {
   comment: IComment
@@ -15,7 +16,8 @@ interface IProps {
 const props = defineProps<IProps>()
 
 const { saveComment, loadComments } = useComments()
-const { user } = useAuth()
+const { user, isAuthenticated } = useAuth()
+const { addToast } = useToaster()
 
 const isReplying = ref(false)
 const newReply = ref('')
@@ -72,6 +74,12 @@ const commentPath = computed(() => {
 
 const toggleForm = () => (isReplying.value = !isReplying.value)
 
+const handleCounterClick = () => {
+  isAuthenticated.value
+    ? toggleForm()
+    : addToast('Please login to leave comments', 'info')
+}
+
 const totalComments = computed(() => countTotalComments(props.comment.replies))
 const totalLikes = computed(() => countTotalLikes(props.comment))
 </script>
@@ -88,7 +96,7 @@ const totalLikes = computed(() => countTotalLikes(props.comment))
         :likes="totalLikes"
         :comments-count="totalComments"
         :parent-path="commentPath"
-        @counter-click="toggleForm"
+        @counter-click="handleCounterClick"
       />
       <div v-if="isReplying" class="reply-form">
         <app-comment-form
