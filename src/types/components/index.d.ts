@@ -17,5 +17,5 @@ export interface IComment {
   createdAt: Date
   likes: number
   level: number
-  replies: Comment[]
+  replies?: Record<string, IComment>
 }

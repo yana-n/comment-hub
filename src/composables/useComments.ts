@@ -63,8 +63,12 @@ export const useComments = () => {
         if (snapshot.exists()) {
           const parentCommentData = snapshot.val()
 
-          parentCommentData.replies = parentCommentData.replies || {}
-          parentCommentData.replies[commentId] = commentData
+          if (commentId) {
+            parentCommentData.replies = parentCommentData.replies || {}
+            parentCommentData.replies[commentId] = commentData
+          } else {
+            console.error('commentId is null');
+          }
 
           await update(parentCommentRef, parentCommentData)
         } else {
