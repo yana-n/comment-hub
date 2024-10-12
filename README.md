@@ -2,7 +2,7 @@
 
 ## Demo of the Project
 
-[Click me 👾](https://comment-hub.netlify.app/)
+[Click me 👾](https://comment-hub.netlify.app/){:target="_blank"}
 
 ## About the Project
 
