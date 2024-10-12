@@ -19,7 +19,7 @@ const userId = ref('')
 
 const db = getDatabase()
 
-const { user } = useAuth()
+const { user, isAuthenticated } = useAuth()
 const { addToast } = useToaster()
 
 onMounted(() => {
@@ -75,7 +75,7 @@ const toggleLike = async () => {
 <template>
   <app-toaster />
   <app-icon-with-counter :count="likes" @click="toggleLike">
-    <icon-like :class="{ liked: userHasLiked }" />
+    <icon-like :class="{ liked: isAuthenticated && userHasLiked }" />
   </app-icon-with-counter>
 </template>
 

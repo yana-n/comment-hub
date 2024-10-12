@@ -42,7 +42,7 @@ const handleSubmit = async (
 
     await loadComments()
   } else {
-    addToast('User is not authenticated', 'error')
+    addToast('Please login to leave comments', 'info')
   }
 }
 </script>
