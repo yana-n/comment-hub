@@ -70,7 +70,7 @@ const commentPath = computed(() => {
   }
 })
 
-const toggleForm = () => isReplying.value = !isReplying.value
+const toggleForm = () => (isReplying.value = !isReplying.value)
 
 const totalComments = computed(() => countTotalComments(props.comment.replies))
 const totalLikes = computed(() => countTotalLikes(props.comment))

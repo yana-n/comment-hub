@@ -4,7 +4,7 @@ import { useAuth } from '@/composables/useAuth'
 import AppCommentForm from '@/components/comments/AppCommentForm.vue'
 import AppCommentBlock from '@/components/comments/AppCommentBlock.vue'
 import { ref, onMounted } from 'vue'
-import {useToaster} from "@/composables/useToaster.ts";
+import { useToaster } from '@/composables/useToaster.ts'
 
 const { comments, loadComments, saveComment } = useComments()
 const { user } = useAuth()
@@ -54,10 +54,7 @@ const handleSubmit = async (
     />
 
     <div v-for="comment in comments" :key="comment.id">
-      <app-comment-block
-        :comment="comment"
-        parent-path="comments"
-      />
+      <app-comment-block :comment="comment" parent-path="comments" />
     </div>
   </div>
 </template>

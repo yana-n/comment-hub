@@ -4,7 +4,7 @@ import { getDatabase, ref as dbRef, get, update } from 'firebase/database'
 import { useAuth } from '@/composables/useAuth'
 import AppIconWithCounter from '@/components/AppIconWithCounter.vue'
 import IconLike from '@/assets/images/icons/like.svg'
-import {useToaster} from "@/composables/useToaster.ts";
+import { useToaster } from '@/composables/useToaster.ts'
 
 const props = defineProps<{
   commentId: string

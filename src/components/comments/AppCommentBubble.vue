@@ -37,10 +37,7 @@ const handleCounterClick = () => {
         :parent-path="parentPath"
         :initial-likes="likes || 0"
       />
-      <app-comment-counter
-        :count="commentsCount"
-        @click="handleCounterClick"
-      />
+      <app-comment-counter :count="commentsCount" @click="handleCounterClick" />
     </div>
   </div>
 </template>
