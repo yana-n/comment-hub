@@ -1,73 +1,73 @@
 <script setup lang="ts">
-import AppCommentLike from "@/components/comments/AppCommentLike.vue";
-import AppCommentCounter from "@/components/comments/AppCommentCounter.vue";
-import {defineProps} from "vue";
-import {prettifyDate} from "@/utils";
+import AppCommentLike from '@/components/comments/AppCommentLike.vue'
+import AppCommentCounter from '@/components/comments/AppCommentCounter.vue'
+import { defineProps } from 'vue'
+import { prettifyDate } from '@/utils'
 
 interface IProps {
- name: string;
- date: string;
- text: string;
- likes: number;
- commentsCount: number;
+  name: string
+  date: string
+  text: string
+  likes: number
+  commentsCount: number
 }
 
-const props = defineProps<IProps>();
+const props = defineProps<IProps>()
 </script>
 
 <template>
-<div class="bubble">
- <div class="top">
-  <div class="name">{{ name }}</div>
-  <div class="date">{{ prettifyDate(date) }}</div>
- </div>
- <div class="text">
-  {{ text }}
- </div>
- <div class="bottom">
-  <app-comment-like :likes />
-  <app-comment-counter :count="commentsCount" />
- </div>
-</div>
+  <div class="bubble">
+    <div class="top">
+      <div class="name">{{ name }}</div>
+      <div class="date">{{ prettifyDate(date) }}</div>
+    </div>
+    <div class="text">
+      {{ text }}
+    </div>
+    <div class="bottom">
+      <app-comment-like :likes />
+      <app-comment-counter :count="commentsCount" />
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .bubble {
- width: 100%;
- display: flex;
- flex-direction: column;
- gap: 20px;
- padding: 15px;
- background: #10132E;
- border: 1px solid #B4B7C9;
- border-radius: 14px;
- font-size: var(--size-xxs);
- font-weight: 300;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 15px;
+  background: #10132e;
+  border: 1px solid #b4b7c9;
+  border-radius: 14px;
+  font-size: var(--size-xxs);
+  font-weight: 300;
 }
 
 .top {
- display: flex;
- justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .text {
- margin: 0;
- line-height: 1.75;
+  margin: 0;
+  line-height: 1.75;
 }
 
 .bottom {
- display: flex;
- align-items: center;
- gap: 14px;
- margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
 }
 
 .name {
- font-weight: 600;
+  font-weight: 600;
 }
 
 .date {
- font-size: var(--size-xxxs);
- color: #9397AD;
+  font-size: var(--size-xxxs);
+  color: #9397ad;
 }
 </style>

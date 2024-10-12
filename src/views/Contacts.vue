@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
-const title = 'Contact <span>Us</span>';
-const text = 'Some contact information';
+const title = 'Contact <span>Us</span>'
+const text = 'Some contact information'
 </script>
 
 <template>
- <DefaultLayout
-   :title
-   :text
- />
+  <DefaultLayout :title :text />
 </template>

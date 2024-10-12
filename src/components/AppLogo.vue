@@ -3,17 +3,17 @@ import LogoIcon from '@/assets/images/logo.svg'
 </script>
 
 <template>
- <router-link to="/">
-  <logo-icon class="logo" />
- </router-link>
+  <router-link to="/">
+    <logo-icon class="logo" />
+  </router-link>
 </template>
 
 <style scoped lang="scss">
 .logo {
- transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 
- &:hover {
-  opacity: 0.8;
- }
+  &:hover {
+    opacity: 0.8;
+  }
 }
 </style>
