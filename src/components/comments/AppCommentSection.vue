@@ -9,16 +9,16 @@ const { comments, getComments, saveComment } = useComments()
 const { user } = useAuth()
 
 const newComment = ref('')
+const parentId = ref<string | null>(null)
 
 onMounted(async () => {
   try {
-    await loadComments() // Загрузка комментариев при монтировании компонента
+    await loadComments()
   } catch (error) {
     console.error('Error fetching comments:', error)
   }
 })
 
-// Функция для загрузки комментариев
 const loadComments = async () => {
   try {
     comments.value = await getComments()
@@ -27,7 +27,10 @@ const loadComments = async () => {
   }
 }
 
-const handleSubmit = async (commentText: string) => {
+const handleSubmit = async (
+  commentText: string,
+  parentId: string | null = null,
+) => {
   if (user.value) {
     const commentData = {
       text: commentText,
@@ -39,13 +42,17 @@ const handleSubmit = async (commentText: string) => {
       replies: {},
     }
 
-    await saveComment(commentData) // Сохранение нового комментария
-    newComment.value = '' // Очищаем поле ввода после отправки
+    await saveComment(commentData, parentId)
+    newComment.value = ''
 
-    await loadComments() // Перезагружаем комментарии, чтобы отобразился новый комментарий
+    await loadComments()
   } else {
     console.error('User is not authenticated')
   }
+}
+
+const handleReply = async (commentText: string, parentId: string) => {
+  await handleSubmit(commentText, parentId)
 }
 </script>
 
@@ -58,7 +65,11 @@ const handleSubmit = async (commentText: string) => {
     />
 
     <div v-for="comment in comments" :key="comment.id">
-      <app-comment-block :comment="comment" />
+      <app-comment-block
+        :comment="comment"
+        parent-path="comments"
+        @reply="handleReply($event, comment.id)"
+      />
     </div>
   </div>
 </template>

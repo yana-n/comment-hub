@@ -1,14 +1,25 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { defineProps, computed, ref } from 'vue'
 import AppCommentBubble from '@/components/comments/AppCommentBubble.vue'
 import AppAvatar from '@/components/AppAvatar.vue'
 import { IComment } from '@/types/components'
+import AppCommentForm from '@/components/comments/AppCommentForm.vue'
+import { useComments } from '@/composables/useComments.ts'
+import { useAuth } from '@/composables/useAuth.ts'
 
 interface IProps {
   comment: IComment
+  parentPath?: string
 }
 
+const { saveComment, getComments } = useComments()
+const { user } = useAuth()
+
 const props = defineProps<IProps>()
+const emit = defineEmits(['reply'])
+
+const isReplying = ref(false)
+const newReply = ref('')
 
 const countTotalComments = (
   replies: Record<string, IComment> | undefined,
@@ -29,8 +40,44 @@ const countTotalLikes = (comment: IComment): number => {
   return comment.likes + repliesLikes
 }
 
-const totalComments = computed(() => countTotalComments(props.comment.replies))
+const updateCommentReplies = async () => {
+  const updatedComments = await getComments()
+  const updatedComment = updatedComments.find((c) => c.id === props.comment.id)
+  if (updatedComment) {
+    props.comment.replies = updatedComment.replies
+  }
+}
 
+const handleReplySubmit = async (replyText: string) => {
+  if (!replyText || !user.value) return
+
+  const replyData = {
+    text: replyText,
+    userId: user.value.uid,
+    userName: user.value.displayName || user.value.email,
+    userEmail: user.value.email,
+    createdAt: new Date().toISOString(),
+    parentId: props.comment.id,
+    likes: 0,
+    replies: {},
+  }
+
+  await saveComment(replyData, props.comment.id)
+  newReply.value = ''
+  isReplying.value = false
+
+  await updateCommentReplies()
+}
+
+const commentPath = computed(() => {
+  if (!props.comment.parentId) {
+    return `comments/${props.comment.id}`
+  } else {
+    return `${props.parentPath}/replies/${props.comment.id}`
+  }
+})
+
+const totalComments = computed(() => countTotalComments(props.comment.replies))
 const totalLikes = computed(() => countTotalLikes(props.comment))
 </script>
 
@@ -38,12 +85,24 @@ const totalLikes = computed(() => countTotalLikes(props.comment))
   <div class="block">
     <app-avatar :name="comment.userName || comment.userEmail" />
     <app-comment-bubble
+      :id="comment.id"
       :text="comment.text"
       :name="comment.userName || comment.userEmail"
       :date="comment.createdAt"
       :likes="totalLikes"
       :comments-count="totalComments"
+      :parent-path="commentPath"
     />
+
+    <button @click="isReplying = !isReplying">Ответить</button>
+
+    <div v-if="isReplying" class="reply-form">
+      <app-comment-form
+        v-model="newReply"
+        :show-btn="false"
+        @submit-form="handleReplySubmit"
+      />
+    </div>
   </div>
 
   <div v-if="comment.replies" class="replies">
@@ -51,6 +110,7 @@ const totalLikes = computed(() => countTotalLikes(props.comment))
       v-for="reply in Object.values(comment.replies)"
       :key="reply.id"
       :comment="reply"
+      :parent-path="commentPath"
     />
   </div>
 </template>
@@ -74,5 +134,9 @@ const totalLikes = computed(() => countTotalLikes(props.comment))
 .block,
 .replies {
   margin-bottom: 40px;
+}
+
+.reply-form {
+  margin-top: 20px;
 }
 </style>

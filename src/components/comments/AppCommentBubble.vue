@@ -5,11 +5,13 @@ import { defineProps } from 'vue'
 import { prettifyDate } from '@/utils'
 
 interface IProps {
+  id: string
   name: string
   date: string
   text: string
   likes: number
   commentsCount: number
+  parentPath?: string
 }
 
 const props = defineProps<IProps>()
@@ -25,7 +27,11 @@ const props = defineProps<IProps>()
       {{ text }}
     </div>
     <div class="bottom">
-      <app-comment-like :likes />
+      <app-comment-like
+        :comment-id="id"
+        :parent-path="parentPath"
+        :initial-likes="likes || 0"
+      />
       <app-comment-counter :count="commentsCount" />
     </div>
   </div>

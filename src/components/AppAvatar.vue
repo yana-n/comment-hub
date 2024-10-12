@@ -8,7 +8,7 @@ interface IProps {
 
 const props = defineProps<IProps>()
 
-const letter = computed(() => props.name[0])
+const letter = computed(() => (props.name ? props.name[0] : ''))
 </script>
 
 <template>
