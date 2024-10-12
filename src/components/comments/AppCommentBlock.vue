@@ -10,8 +10,8 @@ import AppAvatar from "@/components/AppAvatar.vue";
     text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ligula quis lacus fermentum, vitae vulputate sem tristique. Nunc justo orci, porta in luctus eget, ultrices vitae justo. Mauris dignissim laoreet mi, a commodo libero volutpat non. Maecenas aliquam sed leo eu blandit. Nam vehicula rhoncus libero ut porttitor. Proin urna tortor, bibendum at faucibus auctor, cursus sit amet odio. In hac habitasse platea dictumst. "
     name="Test Name"
     date="10-10-2021"
-    comments-count="10"
-    likes="5"
+    :comments-count="10"
+    :likes="5"
   />
  </div>
 </template>

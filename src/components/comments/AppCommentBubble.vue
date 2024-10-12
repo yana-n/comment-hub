@@ -5,7 +5,7 @@ import {defineProps} from "vue";
 
 interface IProps {
  name: string;
- date: Date;
+ date: string;
  text: string;
  likes: number;
  commentsCount: number;
