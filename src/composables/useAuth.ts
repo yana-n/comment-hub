@@ -37,7 +37,6 @@ export const useAuth = () => {
       )
       user.value = userCredential.user
       authSuccess.value = 'Registration successful'
-      console.log('Registered user:', userCredential.user)
     } catch (error) {
       console.error('Registration error:', error)
       authError.value = (error as Error).message
@@ -55,7 +54,6 @@ export const useAuth = () => {
       )
       user.value = userCredential.user
       authSuccess.value = 'Login successful'
-      console.log('Logged in user:', userCredential.user)
     } catch (error) {
       console.error('Login error:', error)
       authError.value = (error as Error).message
@@ -69,7 +67,6 @@ export const useAuth = () => {
       await signOut(auth)
       user.value = null
       authSuccess.value = 'Logout successful'
-      console.log('User logged out')
     } catch (error) {
       console.error('Logout error:', error)
       authError.value = (error as Error).message

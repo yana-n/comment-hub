@@ -4,6 +4,7 @@ import { getDatabase, ref as dbRef, get, update } from 'firebase/database'
 import { useAuth } from '@/composables/useAuth'
 import AppIconWithCounter from '@/components/AppIconWithCounter.vue'
 import IconLike from '@/assets/images/icons/like.svg'
+import {useToaster} from "@/composables/useToaster.ts";
 
 const props = defineProps<{
   commentId: string
@@ -14,9 +15,11 @@ const props = defineProps<{
 const likes = ref(props.initialLikes || 0)
 const userHasLiked = ref(false)
 const userId = ref('')
+
 const db = getDatabase()
 
 const { user } = useAuth()
+const { addToast } = useToaster()
 
 onMounted(() => {
   if (user.value) {
@@ -39,7 +42,7 @@ const fetchLikes = async () => {
 
 const toggleLike = async () => {
   if (!user.value) {
-    console.error('User is not authenticated')
+    addToast('User is not authenticated', 'error')
     return
   }
 
@@ -63,7 +66,7 @@ const toggleLike = async () => {
       })
     }
   } else {
-    console.error('Comment not found')
+    addToast('Comment not found', 'error')
   }
 }
 </script>
@@ -77,18 +80,6 @@ const toggleLike = async () => {
 <style scoped lang="scss">
 .liked {
   color: #5400e3 !important;
-}
-
-svg {
   transition: color 0.3s ease;
-}
-
-.icon {
-  cursor: pointer;
-  transition: opacity 0.2s ease-in-out;
-
-  &:hover {
-    opacity: 0.8;
-  }
 }
 </style>

@@ -4,28 +4,21 @@ import { useAuth } from '@/composables/useAuth'
 import AppCommentForm from '@/components/comments/AppCommentForm.vue'
 import AppCommentBlock from '@/components/comments/AppCommentBlock.vue'
 import { ref, onMounted } from 'vue'
+import {useToaster} from "@/composables/useToaster.ts";
 
-const { comments, getComments, saveComment } = useComments()
+const { comments, loadComments, saveComment } = useComments()
 const { user } = useAuth()
+const { addToast } = useToaster()
 
 const newComment = ref('')
-const parentId = ref<string | null>(null)
 
 onMounted(async () => {
   try {
     await loadComments()
-  } catch (error) {
-    console.error('Error fetching comments:', error)
+  } catch (e) {
+    addToast(`Error fetching comments: ${e}`, 'error')
   }
 })
-
-const loadComments = async () => {
-  try {
-    comments.value = await getComments()
-  } catch (error) {
-    console.error('Error loading comments:', error)
-  }
-}
 
 const handleSubmit = async (
   commentText: string,
@@ -47,12 +40,8 @@ const handleSubmit = async (
 
     await loadComments()
   } else {
-    console.error('User is not authenticated')
+    addToast('User is not authenticated')
   }
-}
-
-const handleReply = async (commentText: string, parentId: string) => {
-  await handleSubmit(commentText, parentId)
 }
 </script>
 
@@ -68,7 +57,6 @@ const handleReply = async (commentText: string, parentId: string) => {
       <app-comment-block
         :comment="comment"
         parent-path="comments"
-        @reply="handleReply($event, comment.id)"
       />
     </div>
   </div>

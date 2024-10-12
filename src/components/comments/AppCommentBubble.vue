@@ -15,6 +15,11 @@ interface IProps {
 }
 
 const props = defineProps<IProps>()
+const emit = defineEmits(['counter-click'])
+
+const handleCounterClick = () => {
+  emit('counter-click')
+}
 </script>
 
 <template>
@@ -32,7 +37,10 @@ const props = defineProps<IProps>()
         :parent-path="parentPath"
         :initial-likes="likes || 0"
       />
-      <app-comment-counter :count="commentsCount" />
+      <app-comment-counter
+        :count="commentsCount"
+        @click="handleCounterClick"
+      />
     </div>
   </div>
 </template>

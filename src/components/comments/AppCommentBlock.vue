@@ -12,11 +12,10 @@ interface IProps {
   parentPath?: string
 }
 
-const { saveComment, getComments } = useComments()
-const { user } = useAuth()
-
 const props = defineProps<IProps>()
-const emit = defineEmits(['reply'])
+
+const { saveComment, loadComments } = useComments()
+const { user } = useAuth()
 
 const isReplying = ref(false)
 const newReply = ref('')
@@ -45,10 +44,10 @@ const handleReplySubmit = async () => {
   if (!newReply || !user.value) return
 
   const replyData = {
-    text: newReply.value || '',
-    userId: user.value.uid || '',
+    text: newReply.value,
+    userId: user.value.uid,
     userName: user.value.displayName || user.value.email || 'Anonymous',
-    userEmail: user.value.email || '',
+    userEmail: user.value.email,
     createdAt: new Date().toISOString(),
     parentId: props.comment.id,
     likes: 0,
@@ -60,7 +59,7 @@ const handleReplySubmit = async () => {
   newReply.value = ''
   isReplying.value = false
 
-  emit('reply')
+  await loadComments()
 }
 
 const commentPath = computed(() => {
@@ -71,6 +70,8 @@ const commentPath = computed(() => {
   }
 })
 
+const toggleForm = () => isReplying.value = !isReplying.value
+
 const totalComments = computed(() => countTotalComments(props.comment.replies))
 const totalLikes = computed(() => countTotalLikes(props.comment))
 </script>
@@ -78,24 +79,24 @@ const totalLikes = computed(() => countTotalLikes(props.comment))
 <template>
   <div class="block">
     <app-avatar :name="comment.userName || comment.userEmail" />
-    <app-comment-bubble
-      :id="comment.id"
-      :text="comment.text"
-      :name="comment.userName || comment.userEmail"
-      :date="comment.createdAt"
-      :likes="totalLikes"
-      :comments-count="totalComments"
-      :parent-path="commentPath"
-    />
-
-    <button @click="isReplying = !isReplying">Ответить</button>
-
-    <div v-if="isReplying" class="reply-form">
-      <app-comment-form
-        v-model="newReply"
-        :show-btn="false"
-        @submit-form="handleReplySubmit"
+    <div class="wrapper">
+      <app-comment-bubble
+        :id="comment.id"
+        :text="comment.text"
+        :name="comment.userName || comment.userEmail"
+        :date="comment.createdAt"
+        :likes="totalLikes"
+        :comments-count="totalComments"
+        :parent-path="commentPath"
+        @counter-click="toggleForm"
       />
+      <div v-if="isReplying" class="reply-form">
+        <app-comment-form
+          v-model="newReply"
+          :show-btn="false"
+          @submit-form="handleReplySubmit"
+        />
+      </div>
     </div>
   </div>
 
@@ -110,6 +111,10 @@ const totalLikes = computed(() => countTotalLikes(props.comment))
 </template>
 
 <style scoped lang="scss">
+.wrapper {
+  width: 100%;
+}
+
 .block {
   display: flex;
   align-items: flex-start;

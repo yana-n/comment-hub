@@ -55,9 +55,6 @@ export const useComments = () => {
                 (MAX_COMMENT_LEVEL + 1),
             )
             .join('/')
-
-          console.log(currentPath)
-          console.log(adjustedPath)
         }
 
         const parentCommentRef = ref(db, adjustedPath)
@@ -124,6 +121,14 @@ export const useComments = () => {
     await update(commentRef, commentData)
   }
 
+  const loadComments = async () => {
+    try {
+      comments.value = await getComments()
+    } catch (error) {
+      console.error('Error loading comments:', error)
+    }
+  }
+
   const parseComments = (data: Record<string, IComment>): IComment[] => {
     return Object.entries(data)
       .map(([key, value]: [string, IComment]) => ({
@@ -140,6 +145,7 @@ export const useComments = () => {
   return {
     comments,
     getComments,
+    loadComments,
     saveComment,
     toggleLike,
   }
