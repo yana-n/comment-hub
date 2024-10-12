@@ -54,8 +54,6 @@ export const useComments = () => {
         const snapshot = await get(parentRef)
 
         if (snapshot.exists()) {
-          const parentComment = snapshot.val()
-
           const nextLevel =
             currentLevel < MAX_COMMENT_LEVEL
               ? currentLevel + 1
@@ -63,7 +61,7 @@ export const useComments = () => {
           const replyPath = `comments/${parentId}/replies/${commentData.id}`
           await set(ref(db, replyPath), { ...commentData, level: nextLevel })
         } else {
-          throw new Error('Parent comment does not exist')
+          console.error('Parent comment does not exist')
         }
       }
     } catch (error) {
