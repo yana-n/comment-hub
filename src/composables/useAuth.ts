@@ -11,7 +11,7 @@ import {
 const user = ref<User | null>(null)
 const authError = ref<string | null>(null)
 const authSuccess = ref<string | null>(null)
-const isAuthenticated = ref<boolean>(false);
+const isAuthenticated = ref<boolean>(false)
 
 onAuthStateChanged(auth, (currentUser) => {
   if (currentUser) {

@@ -6,7 +6,7 @@ import { IComment } from '@/types/components'
 import AppCommentForm from '@/components/comments/AppCommentForm.vue'
 import { useComments } from '@/composables/useComments.ts'
 import { useAuth } from '@/composables/useAuth.ts'
-import {useToaster} from "@/composables/useToaster";
+import { useToaster } from '@/composables/useToaster'
 
 interface IProps {
   comment: IComment
